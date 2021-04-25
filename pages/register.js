@@ -4,7 +4,7 @@ import {
   useRegisterUser
 } from '@/apollo/actions';
 import withApollo from '@/hoc/withApollo';
-import { getDataFromTree } from '@apollo/react-ssr';
+import { getDataFromTree } from '@apollo/client/react/ssr';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 function register() {
@@ -14,7 +14,7 @@ function register() {
   const register = (registerData) => {
     signUp(
       { variables: registerData }
-    ).then(() => router.push('/login'))
+    ).then(() => router.push('/login?message=LOGGED_IN'))
     .catch(err => { 
       console.log(err.message);
       setError(err.message) 

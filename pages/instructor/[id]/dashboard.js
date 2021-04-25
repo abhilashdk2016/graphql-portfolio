@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import BaseLayout from '@/layouts/baseLayout';
 import withApollo from '@/hoc/withApollo';
 import withAuth from '@/hoc/withAuth';
-import { getDataFromTree } from '@apollo/react-ssr';
+import { getDataFromTree } from '@apollo/client/react/ssr';
 import { useRouter } from 'next/router';
 import { Card, Button } from 'react-bootstrap';
 import { useGetUserPortfolios, useDeletePortfolio } from '@/apollo/actions';

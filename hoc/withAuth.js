@@ -1,26 +1,30 @@
 import { useGetUser } from '@/apollo/actions';
 import Redirect from '@/components/shared/Redirect';
-export default function withAuth(WrappedComponent, role, options = { ssr: false }) {
-  function innerFunction (props) {
+import SpinningLoader from '@/components/shared/Loader';
+export default function withAuthFunction(WrappedComponent, role, options = { ssr: false }) {
+  function WithAuth(props) {
   
-  const { data: { user } = { }, loading, error } = useGetUser({ fetchPolicy: 'network-only' });
-
-  if (
-    !loading && 
-    (!user || error ) &&
-    typeof window !== 'undefined'
-  ) {
-    return <Redirect to="/login" />
-  }
-  
-  if (user) {
-    if (role && !role.includes(user.role)) {
-      return <Redirect to="/login" />
+    const { data: { user } = { }, loading, error } = useGetUser({ fetchPolicy: 'network-only' });
+    if (
+      !loading && 
+      (!user || error ) &&
+      typeof window !== 'undefined'
+    ) {
+      return <Redirect to="/login" query={{message: 'NOT_AUTHENTICATED'}}/>
     }
-    return <WrappedComponent {...props} />
-  }
+    
+    if (user) {
+      if (role && !role.includes(user.role)) {
+        return <Redirect to="/login" query={{message: 'NOT_AUTHORIZED'}}/>
+      }
+      return <WrappedComponent {...props} />
+    }
 
-  return <div>Authenticating...</div>
+    return (
+      <div className="spinner-container">
+        <SpinningLoader variant="large" />;
+      </div>
+    )
   }
 
   if(options.ssr) {
@@ -29,17 +33,16 @@ export default function withAuth(WrappedComponent, role, options = { ssr: false 
       res.end();
       return {};
     }
-    innerFunction.getInitialProps = async (context) => {
+    WithAuth.getInitialProps = async (context) => {
       const { req, res } = context;
-
       if(req) {
         const { user } = req;
         if(!user) {
-          return serverRedirect(res, '/login');
+          return serverRedirect(res, '/login?message=NOT_AUTHENTICATED');
         }
 
         if (role && !role.includes(user.role)) {
-          return serverRedirect(res, '/login');
+          return serverRedirect(res, '/login?message=NOT_AUTHORIZED');
         }
       }
 
@@ -48,5 +51,5 @@ export default function withAuth(WrappedComponent, role, options = { ssr: false 
     }
   }
 
-  return innerFunction;
+  return WithAuth;
 } 

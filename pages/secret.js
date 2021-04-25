@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import withApollo from '@/hoc/withApollo';
-import { getDataFromTree } from '@apollo/react-ssr';
-import { useRouter } from 'next/router';
+import { getDataFromTree } from '@apollo/client/react/ssr';
 import withAuth from '@/hoc/withAuth';
 const secret = withAuth(() => {
   
@@ -17,6 +16,6 @@ const secret = withAuth(() => {
       </div>
     </>
   )
-}, ['admin']);
+}, ['admin', 'instructor']);
 
 export default withApollo(secret, { getDataFromTree });

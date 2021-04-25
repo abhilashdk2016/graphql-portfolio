@@ -5,7 +5,7 @@ import {
   useGetPortfolios
 } from '../../apollo/actions';
 import withApollo from '@/hoc/withApollo';
-import { getDataFromTree } from '@apollo/react-ssr';
+import { getDataFromTree } from '@apollo/client/react/ssr';
 
 const Portfolio = () => {
   const { data } = useGetPortfolios();

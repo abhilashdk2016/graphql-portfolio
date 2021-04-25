@@ -13,15 +13,6 @@ const apolloServer = require('./graphql').createApolloServer();
 const db = require('./database');
 db.connect();
 
-const sess = {
-  name: 'portfolio-session',
-  secret: config.SESSION_SECRET,
-  cookie: { maxAge: 2 * 60 * 60 * 100},
-  resave: false,
-  saveUninitialized: false,
-  store: db.initSessionStore()
-}
-
 app.prepare().then(() => {
   const server = express();
   require('./middlewares').init(server, db);

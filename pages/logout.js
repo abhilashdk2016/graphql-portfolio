@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BaseLayout from '@/layouts/baseLayout';
 import withApollo from '@/hoc/withApollo';
-import { getDataFromTree } from '@apollo/react-ssr';
+import { getDataFromTree } from '@apollo/client/react/ssr';
 import { useSignOut } from '@/apollo/actions';
 import { useRouter } from 'next/router';
 function login({ apollo }) {

@@ -1,7 +1,7 @@
 import BaseLayout from '@/layouts/baseLayout';
 import { useGetPortfolio } from '@/apollo/actions';
 import withApollo from '@/hoc/withApollo';
-import { getDataFromTree } from '@apollo/react-ssr';
+import { getDataFromTree } from '@apollo/client/react/ssr';
 import { formatDate } from '@/utils/functions';
 
 function PortfolioDetail({ query }) {
